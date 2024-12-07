@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency Rates</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h1>Currency Rates</h1>
+<form method="get" action="/currencies">
+    <label for="currency">Choose a currency:</label>
+    <input type="text" id="currency" name="currency" placeholder="Enter currency code (e.g., USD)" required>
+    <button type="submit">Search</button>
+</form>
+
+<h2>Available Currencies</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+        <th>Rate</th>
+        <th>Last Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Currency data will be dynamically inserted here -->
+    <tr th:each="currency : ${currencies}">
+        <td th:text="${currency.currencyCode}"></td>
+        <td th:text="${currency.currencyDescription}"></td>
+        <td th:text="${currency.rates}"></td>
+        <td th:text="${currency.dateTime}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -12,9 +13,9 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 @Slf4j
-public class ConnectionToClientApiUtil {
+public class ApiConnectionUtil {
 
-    private static final String API_KEY = "aoT7U52QCJ6qmJ4I6xBwk5qr80DHevZa";
+    private static final String API_KEY = "LMs6Gvbua0NTzgcqwIiAGLJuFV7iWy8D";
     private static final String BASE_URL = "https://api.apilayer.com/fixer";
 
     private final OkHttpClient client = new OkHttpClient().newBuilder().build();

@@ -1,12 +1,9 @@
-package alexgr.exchange_rate_app.service.dataUpdaterService;
+package alexgr.exchange_rate_app.service;
 
-import alexgr.exchange_rate_app.service.CurrencyUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -15,14 +12,20 @@ public class DataUpdateService {
 
     private final CurrencyUpdateService updateService;
 
+    /**
+     * Задача для периодического обновления курсов валют.
+     * Выполняется каждые 30 минут.
+     */
     @Scheduled(fixedRate = 1800000)
     public void updateData() {
-        log.info("Scheduled task started: Updating currency rates...");
+        log.info("Запущена задача по обновлению курсов валют...");
         try {
+            // Обновляем курсы валют с базовой валютой USD
             updateService.updateCurrencyRates("USD");
-            log.info("Currency rates updated successfully.");
+            log.info("Курсы валют успешно обновлены.");
         } catch (Exception e) {
-            log.error("Error during scheduled rate update: {}", e.getMessage(), e);
+
+            log.error("Ошибка при обновлении курсов валют: {}", e.getMessage(), e);
         }
     }
 }

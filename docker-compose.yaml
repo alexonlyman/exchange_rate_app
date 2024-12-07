@@ -3,7 +3,8 @@ version: '3.9'
 services:
   postgres:
     image: postgres:16
-    container_name: report_service_postgres
+    restart: always
+    container_name: rate_app_postgres
     ports:
       - "5432:5432"
     environment:
@@ -13,12 +14,13 @@ services:
 
   app:
     build: .
-    container_name: report_service_app
+    container_name: rate_app
     ports:
       - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/webDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
     depends_on:
       - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/webDB
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+

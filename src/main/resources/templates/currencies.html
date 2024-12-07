@@ -1,38 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Currency Rates</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Currency List</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<h1>Currency Rates</h1>
-<form method="get" action="/currencies">
-    <label for="currency">Choose a currency:</label>
-    <input type="text" id="currency" name="currency" placeholder="Enter currency code (e.g., USD)" required>
-    <button type="submit">Search</button>
+<h1>Список валют</h1>
+
+<!-- Уведомления об успехе или ошибке -->
+<div th:if="${successMessage}" style="color: green; text-align: center; margin-bottom: 20px;">
+    <p th:text="${successMessage}"></p>
+</div>
+<div th:if="${errorMessage}" style="color: red; text-align: center; margin-bottom: 20px;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<!-- Форма для выбора даты и базовой валюты -->
+<form th:action="@{/api/currencies/update-by-date}" method="get" style="text-align: center; margin-bottom: 20px;">
+    <label for="date">Выберите дату (не позднее 5 дней):</label>
+    <input type="date" id="date" name="date" required
+           max="{{T(java.time.LocalDate).now().toString()}}"
+           min="{{T(java.time.LocalDate).now().minusDays(5).toString()}}">
+
+    <label for="base">Выберите базовую валюту:</label>
+    <select id="base" name="base" required>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <!-- Можно добавить другие валюты -->
+    </select>
+
+    <button type="submit" class="update-button">Обновить данные</button>
 </form>
 
-<h2>Available Currencies</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Code</th>
-        <th>Description</th>
-        <th>Rate</th>
-        <th>Last Updated</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Currency data will be dynamically inserted here -->
-    <tr th:each="currency : ${currencies}">
-        <td th:text="${currency.currencyCode}"></td>
-        <td th:text="${currency.currencyDescription}"></td>
-        <td th:text="${currency.rates}"></td>
-        <td th:text="${currency.dateTime}"></td>
-    </tr>
-    </tbody>
-</table>
+<!-- Кнопка для обновления всех курсов -->
+<form th:action="@{/api/currencies/update}" method="get" style="text-align: center; margin-bottom: 20px;">
+    <button type="submit" class="update-button">Обновить все курсы</button>
+</form>
+
+<!-- Таблица для отображения списка валют -->
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Код валюты</th>
+            <th>Описание</th>
+            <th>Курс</th>
+            <th>Дата обновления</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="currency : ${currencies}">
+            <td th:text="${currency.currencyCode}"></td>
+            <td th:text="${currency.currencyDescription}"></td>
+            <td th:text="${currency.rates}"></td>
+            <td th:text="${currency.dateTime}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
+
+
 

@@ -20,7 +20,7 @@ cd exchange_rate_app
 
 🛠 Шаг 2: Сборка JAR-файла
 
-mvn clean package
+mvn clean package -DskipTests
 
 🐳 Шаг 3: Запуск с помощью Docker Compose
 
